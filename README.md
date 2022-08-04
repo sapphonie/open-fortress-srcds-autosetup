@@ -12,3 +12,7 @@ stdout/stderr for various functions are in the root of the folder you choose to 
 `file.out` = stdout
 
 `file.err` = stderr
+
+
+## Todo
+- gameinfo.txt
