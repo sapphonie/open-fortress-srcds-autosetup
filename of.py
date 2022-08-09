@@ -203,19 +203,19 @@ def domurse_fullupdate():
     global_murse_proces = murse_process
 
 
-def dosteamcmd_block():
+def dosteamcmd_block(spinners):
     steamcmd_out, steamcmd_err = global_steamcmd_process.communicate()
     ret = global_steamcmd_process.returncode
     if ret != 0:
-        bothspinners.fail(f"Something went wrong with SteamCMD! Exit code was {ret}.")
+        spinners.fail(f"Something went wrong with SteamCMD! Exit code was {ret}.")
         quit()
 
 
-def domurse_block():
+def domurse_block(spinners):
     murse_out, murse_err = global_murse_proces.communicate()
     ret = global_murse_proces.returncode
     if ret != 0:
-        bothspinners.fail(f"Something went wrong with Murse! Exit code was {ret}.")
+        spinners.fail(f"Something went wrong with Murse! Exit code was {ret}.")
         quit()
 
 
@@ -228,8 +228,8 @@ def getGameFiles():
     domurse_fullupdate()
     
     # these do not block independently of each other
-    dosteamcmd_block()
-    domurse_block()
+    dosteamcmd_block(bothspinners)
+    domurse_block(bothspinners)
     
     bothspinners.succeed("Done downloading game files.")
     bothspinners.stop()
@@ -461,7 +461,7 @@ def makeSh():
     of_sh = open("./sdk/of.sh", "w")
     of_sh.write(f"""
 #!/bin/bash
-./{global_cwd}/{global_ourpath}/sdk/srcds_run -console -game open_fortress -port 27015 +ip "0.0.0.0" -nohltv \
+{global_cwd}/{global_ourpath}/sdk/srcds_run -console -game open_fortress -port 27015 +ip "0.0.0.0" -nohltv \
 +maxplayers 24 +map dm_crossfire +sv_cheats 0 \
 -autoupdate -steam_dir {global_cwd}/{global_ourpath}/ -steamcmd_script {global_cwd}/{global_ourpath}/fullupdate.txt
 """)
